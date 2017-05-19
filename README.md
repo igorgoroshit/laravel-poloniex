@@ -17,7 +17,7 @@ This is a fork of  of https://github.com/htunlogic/laravel-poloniex
 
 ### Installation
 
-Require this package in your project with `composer require htunlogic/laravel-poloniex`.
+Require this package in your project with `composer require pepijnolivier/laravel-poloniex`.
 
 Add the service provider to your `config/app.php`:
  
