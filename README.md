@@ -24,7 +24,7 @@ Add the service provider to your `config/app.php`:
  ``` 
  'providers' => [
  
-     Htunlogic\Poloniex\PoloniexServiceProvider::class,
+     Pepijnolivier\Poloniex\PoloniexServiceProvider::class,
      
  ],
  ```
@@ -44,14 +44,14 @@ Optionally you can add alias to your `config/app.php`:
 ```    
 'aliases' => [
            
-    'Poloniex' => Htunlogic\Poloniex\Poloniex::class,
+    'Poloniex' => Pepijnolivier\Poloniex\Poloniex::class,
            
 ],
 ```
 
 Usage examples: 
 ``` 
-use Htunlogic\Poloniex\Poloniex;
+use Pepijnolivier\Poloniex\Poloniex;
 ```
 ``` 
 Poloniex::getBalanceFor('BTC');
