@@ -155,6 +155,24 @@ class Client implements ClientContract
             'command' => 'returnCurrencies',
         ]);
     }
+
+    /**
+     * Chart data for given currency pair.
+     *
+     * @param string      $pair
+     * @param string|null $start
+     * @param string|null $end
+     * @param string|null $period
+     * @return array
+     */
+    public function getChartData($pair, $start = null, $end = null, $period = null)
+    {
+        return $this->public(array_merge([
+            'command' => 'returnChartData',
+            'currencyPair' => strtoupper($pair),
+            'period' => $period
+        ], $this->formatDates($start, $end)));
+    }
     /**
      * Trade history for given currency pair.
      *
