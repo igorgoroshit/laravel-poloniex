@@ -1,5 +1,5 @@
 {
-  "name": "htunlogic/laravel-poloniex",
+  "name": "pepijnolivier/laravel-poloniex",
   "description": "Poloniex API wrapper for Laravel",
   "tags": ["poloniex", "api", "laravel"],
   "type": "library",
