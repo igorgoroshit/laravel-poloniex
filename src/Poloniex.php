@@ -1,5 +1,5 @@
 <?php
-namespace Htunlogic\Poloniex;
+namespace Pepijnolivier\Poloniex;
 
 use Illuminate\Support\Facades\Facade;
 

@@ -1,6 +1,5 @@
 <?php
-namespace Htunlogic\Poloniex;
-
+namespace Pepijnolivier\Poloniex;
 
 interface ClientContract
 {
