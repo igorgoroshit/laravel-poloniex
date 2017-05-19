@@ -70,12 +70,14 @@ class Client implements ClientContract
      * @param string $pair
      * @return mixed
      */
-    public function getMyTradeHistory($pair, $extraOptions)
+    public function getMyTradeHistory($pair, $start = null, $end = null)
     {
-        $options = [
+        return $this->trading(array_merge([
             'command' => 'returnTradeHistory',
             'currencyPair' => strtoupper($pair)
-        ] + $extraOptions;
+        ], $this->formatDates($start, $end)));
+    }
+
 
         return $this->trading($options);
     }
