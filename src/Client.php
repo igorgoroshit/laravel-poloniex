@@ -149,6 +149,12 @@ class Client implements ClientContract
         ]);
     }
 
+
+    public function returnCurrencies() {
+        return $this->public([
+            'command' => 'returnCurrencies',
+        ]);
+    }
     /**
      * Trade history for given currency pair.
      *
