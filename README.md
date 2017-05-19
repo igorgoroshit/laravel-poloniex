@@ -2,7 +2,9 @@
 
 This is a fork of  of https://github.com/htunlogic/laravel-poloniex
 
-- I am not versioning my fork (for now). If you want to use it, you'll have to use `composer require pepijnolivier/laravel-poloniex:dev-master`
+- I am not versioning my fork (for now). 
+
+  If you want to use it, you'll have to use `composer require pepijnolivier/laravel-poloniex:dev-master`
 - I added a few extra methods to the Client, see commit history
 
 
