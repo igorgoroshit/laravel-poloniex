@@ -79,7 +79,12 @@ class Client implements ClientContract
     }
 
 
-        return $this->trading($options);
+    public function getAvailableAccountBalances($account=null) {
+        return $this->trading(array_merge([
+            'command' => 'returnAvailableAccountBalances',
+        ], [
+            'account' => $account,
+        ]));
     }
 
     /**
