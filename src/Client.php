@@ -173,6 +173,13 @@ class Client implements ClientContract
             'period' => $period
         ], $this->formatDates($start, $end)));
     }
+
+    public function getDepositsWithdrawals($start=null, $end=null) {
+        return $this->trading(array_merge([
+            'command' => 'returnDepositsWithdrawals',
+        ], $this->formatDates($start, $end)));
+    }
+
     /**
      * Trade history for given currency pair.
      *
