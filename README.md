@@ -54,4 +54,4 @@ Poloniex::getVolume();
 Poloniex::getTickers();
 ```
 
-Did I help you with this package ? BTC Tipjar: 1N5ET46r5Z4HdfhRjGMp7SpEMPes9S1H9n
+Did I help you with this package ? BTC Tipjar: `1N5ET46r5Z4HdfhRjGMp7SpEMPes9S1H9n`
