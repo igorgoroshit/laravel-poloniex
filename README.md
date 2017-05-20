@@ -1,20 +1,3 @@
-# Fork
-
-This is a fork of  of https://github.com/htunlogic/laravel-poloniex
-
-- I am not versioning my fork (for now). 
-
-  If you want to use it, you'll have to use `composer require pepijnolivier/laravel-poloniex:dev-master`
-- I added a few extra methods to the Client, see commit history
-
-
-(original readme below this line)
-
-
----
-
-
-
 ### Installation
 
 Require this package in your project with `composer require pepijnolivier/laravel-poloniex`.
@@ -70,3 +53,5 @@ Poloniex::getBalances();
 Poloniex::getVolume();
 Poloniex::getTickers();
 ```
+
+Did I help you with this package ? BTC Tipjar: 1N5ET46r5Z4HdfhRjGMp7SpEMPes9S1H9n
