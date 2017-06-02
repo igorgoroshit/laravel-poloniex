@@ -315,6 +315,22 @@ class Client implements ClientContract
         return $this->trading($parameters);
     }
 
+    public function getValidChartDataTickIntervals() {
+
+        $validTickIntervals = [
+            '300' => '300', // 5 min
+            '900' => '900', // 15 min
+            '1800' => '1800', // 30 min
+            '7200' => '7200', // 2 hours
+            '14400' => '14400', // 4 hours
+            '86400' => '86400', // 1 day
+        ];
+
+        return $validTickIntervals;
+    }
+
+
+
     /**
      * @inheritdoc
      */
