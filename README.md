@@ -52,6 +52,8 @@ Poloniex::getTicker("BTC_XMR");
 Poloniex::getBalances();
 Poloniex::getVolume();
 Poloniex::getTickers();
+Poloniex::getActiveLoans();
+Poloniex::getValidChartDataTickIntervals();
 ```
 
 Did I help you with this package ? BTC Tipjar: `1N5ET46r5Z4HdfhRjGMp7SpEMPes9S1H9n`
