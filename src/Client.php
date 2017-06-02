@@ -26,6 +26,8 @@ class Client implements ClientContract
      */
     private $secret;
 
+    public static $nonceIteration = 0;
+
     /**
      * Client constructor.
      *
@@ -389,8 +391,12 @@ class Client implements ClientContract
      */
     public function trading(array $parameters = [])
     {
-        $mt = (string) microtime(true);
-        $parameters['nonce'] = intval(substr(str_replace('.', '', $mt), 0, 13));
+        $mt = (int) microtime(true) * 1000;
+        $mt += self::$nonceIteration;
+
+        self::$nonceIteration++;
+
+        $parameters['nonce'] = $mt;
 
         $post = http_build_query(array_filter($parameters), '', '&');
         $sign = hash_hmac('sha512', $post, $this->secret);
