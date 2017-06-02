@@ -270,6 +270,23 @@ class Client implements ClientContract
     }
 
     /**
+     * Returns all of your balances, including available balance, balance on orders, and the estimated BTC value of your balance.
+     *
+     * By default, this call is limited to your exchange account;
+     * set the "account" POST parameter to "all" to include your margin and lending accounts.
+     *
+     * @inheritdoc
+     */
+    public function getCompleteBalances($account='all')
+    {
+        return $this->trading([
+            'command' => 'returnCompleteBalances',
+            'account' => $account,
+        ]);
+
+    }
+
+    /**
      * @inheritdoc
      */
     public function getVolume()
