@@ -1,6 +1,9 @@
 <?php
 namespace Pepijnolivier\Poloniex;
 
+
+use Illuminate\Support\Facades\Log;
+
 class Client implements ClientContract
 {
     /**
@@ -374,7 +377,11 @@ class Client implements ClientContract
             $url, false, stream_context_create($options)
         );
 
-        return json_decode($feed, true);
+        $response = json_decode($feed, true);
+        if(isset($response['error'])) {
+            Log::error($response['error']);
+        }
+        return $response;
     }
 
     /**
@@ -414,6 +421,12 @@ class Client implements ClientContract
             throw new Exception('Curl error: '.curl_error($ch));
         }
 
-        return json_decode($response, true);
+        $response = json_decode($response, true);
+
+        if(isset($response['error'])) {
+            Log::error($response['error']);
+        }
+
+        return $response;
     }
 }
