@@ -284,6 +284,12 @@ class Client implements ClientContract
         ]);
     }
 
+    public function getActiveLoans() {
+        return $this->trading([
+            'command' => 'returnActiveLoans',
+        ]);
+    }
+
     /**
      * @inheritdoc
      */
