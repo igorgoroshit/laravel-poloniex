@@ -24,7 +24,7 @@ class PoloniexServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('poloniex', function () {
+        $this->app->bind('poloniex', function() {
             return new PoloniexManager;
         });
     }
