@@ -10,6 +10,8 @@ interface ClientContract
      */
     function getBalances();
 
+    function getCompleteBalances();
+
     /**
      * Returns the trading volume.
      *
