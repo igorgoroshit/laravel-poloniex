@@ -582,6 +582,42 @@ class Client implements ClientContract
     }
 
     /**
+     * Returns your lending history within a time range specified by the "start" and "end" POST as UNIX timestamps.
+     * "limit" may also be specified to limit the number of rows returned.
+     *
+     * @return mixed
+     */
+    public function getLendingHistory(int $startUnixTimestamp, int $endUnixTimestamp, int $limit=0) {
+
+        $parameters = [
+            'command' => 'returnLendingHistory',
+            'start' => $startUnixTimestamp,
+            'end' => $endUnixTimestamp,
+        ];
+
+        if($limit > 0) {
+            $parameters['limit'] = $limit;
+        }
+
+        return $this->trading($parameters);
+    }
+
+
+    /**
+     * Toggles the autoRenew setting on an active loan, specified by the "orderNumber" parameter.
+     * If successful, "message" will indicate the new autoRenew setting.
+     *
+     * @param $orderNumber
+     * @return mixed
+     */
+    public function toggleAutoRenewLoan($orderNumber) {
+        return $this->trading([
+            'command' => 'toggleAutoRenewLoan',
+            'orderNumber' => $orderNumber,
+        ]);
+    }
+
+    /**
      * @inheritdoc
      */
     public function buyOrSell($command, $pair, $rate, $amount, $type = null)
