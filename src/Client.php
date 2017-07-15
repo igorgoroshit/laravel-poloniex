@@ -169,7 +169,12 @@ class Client implements ClientContract
     }
 
 
-    public function returnCurrencies() {
+    /**
+     * Returns information about currencies
+     *
+     * @return array|mixed
+     */
+    public function getCurrencies() {
         return $this->public([
             'command' => 'returnCurrencies',
         ]);
