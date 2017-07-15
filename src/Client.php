@@ -383,6 +383,21 @@ class Client implements ClientContract
 
 
     /**
+     * If you are enrolled in the maker-taker fee schedule,
+     * returns your current trading fees and trailing 30-day volume in BTC.
+     * This information is updated once every 24 hours.
+     *
+     * @return mixed
+     */
+    public function getFeeInfo()
+    {
+        return $this->trading([
+            'command' => 'returnFeeInfo',
+        ]);
+    }
+
+
+    /**
      * Returns information about currencies
      *
      * @return array|mixed
