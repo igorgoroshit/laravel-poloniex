@@ -340,6 +340,30 @@ class Client implements ClientContract
     }
 
     /**
+     * Cancels an order and places a new one of the same type in a single atomic transaction,
+     * meaning either both operations will succeed or both will fail.
+     * Required parameters are "orderNumber" and "rate";
+     *
+     * you may optionally specify "amount" if you wish to change the amount of the new order.
+     * "postOnly" or "immediateOrCancel" may be specified for exchange orders,
+     * but will have no effect on margin orders.
+     *
+     * @param $orderNumber
+     * @param $rate
+     * @param array $options
+     * @return mixed
+     */
+    public function moveOrder($orderNumber, $rate, array $options=[])
+    {
+        return $this->trading(array_merge([
+            'command' => 'moveOrder',
+            'orderNumber' => $orderNumber,
+            'rate' => $rate,
+        ], $options));
+    }
+
+
+    /**
      * Withdraw the currency amount to address.
      *
      * @param string $currency
