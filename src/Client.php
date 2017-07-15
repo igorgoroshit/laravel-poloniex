@@ -82,6 +82,20 @@ class Client implements ClientContract
         ], $this->formatDates($start, $end)));
     }
 
+    /**
+     * Returns all trades involving a given order, specified by the "orderNumber" parameter.
+     * If no trades for the order have occurred or you specify an order that does not belong to you, you will receive an error.
+     *
+     * @param $orderNumber
+     * @return mixed
+     */
+    public function getOrderTrades($orderNumber) {
+        return $this->trading([
+            'command' => 'returnOrderTrades',
+            'orderNumber' => $orderNumber
+        ]);
+    }
+
 
     public function getAvailableAccountBalances($account=null)
     {
@@ -91,6 +105,181 @@ class Client implements ClientContract
             'account' => $account,
         ]));
     }
+
+    /**
+     * Returns your current tradable balances for each currency in each market for which margin trading is enabled.
+     * Please note that these balances may vary continually with market conditions.
+     *
+     * @return mixed
+     */
+    public function getTradableBalances() {
+        return $this->trading([
+            'command' => 'returnTradableBalances',
+        ]);
+    }
+
+
+
+
+    /**
+     * Transfers funds from one account to another (e.g. from your exchange account to your margin account).
+     * Required parameters are "currency", "amount", "fromAccount", and "toAccount".
+     *
+     * @param $currency
+     * @param $amount
+     * @param $fromAccount
+     * @param $toAccount
+     * @return mixed
+     */
+    public function transferBalance($currency, $amount, $fromAccount, $toAccount) {
+        return $this->trading([
+            'command' => 'transferBalance',
+            'currency' => $currency,
+            'amount' => $amount,
+            'fromAccount' => $fromAccount,
+            'toAccount' => $toAccount,
+        ]);
+    }
+
+
+    /**
+     * Returns a summary of your entire margin account.
+     * This is the same information you will find in the Margin Account section of the Margin Trading page, under the Markets list.
+     *
+     * @return mixed
+     */
+    public function getMarginAccountSummary() {
+        return $this->trading([
+            'command' => 'returnMarginAccountSummary',
+        ]);
+    }
+
+    /**
+     * Places a margin buy order in a given market. Required parameters are "currencyPair", "rate", and "amount".
+     * You may optionally specify a maximum lending rate using the "lendingRate" parameter.
+     * If successful, the method will return the order number and any trades immediately resulting from your order.
+     *
+     * @param $pair
+     * @param $rate
+     * @param $amount
+     * @param null $lendingRate
+     *
+     * @return mixed
+     */
+    public function marginBuy($pair, $rate, $amount, $lendingRate=null)
+    {
+        $parameters = [
+            'command' => 'marginBuy',
+            'currencyPair' => strtoupper($pair),
+            'rate' => $rate,
+            'amount' => $amount,
+            'lendingRate' => $lendingRate
+        ];
+
+        $filteredParameters = array_filter($parameters); // remove null values, like lendingRate
+        return $this->trading($filteredParameters);
+    }
+
+    /**
+     * Places a margin sell order in a given market. Required parameters are "currencyPair", "rate", and "amount".
+     * You may optionally specify a maximum lending rate using the "lendingRate" parameter.
+     * If successful, the method will return the order number and any trades immediately resulting from your order.
+     *
+     * @param $pair
+     * @param $rate
+     * @param $amount
+     * @param null $lendingRate
+     * @return mixed
+     */
+    public function marginSell($pair, $rate, $amount, $lendingRate=null) {
+        $parameters = [
+            'command' => 'marginSell',
+            'currencyPair' => strtoupper($pair),
+            'rate' => $rate,
+            'amount' => $amount,
+            'lendingRate' => $lendingRate
+        ];
+
+        $filteredParameters = array_filter($parameters); // remove null values, like lendingRate
+        return $this->trading($filteredParameters);
+    }
+
+
+    /**
+     * Returns information about your margin position in a given market, specified by the "currencyPair" parameter.
+     * You may set "currencyPair" to "all" if you wish to fetch all of your margin positions at once.
+     * If you have no margin position in the specified market, "type" will be set to "none".
+     * "liquidationPrice" is an estimate, and does not necessarily represent the price at which an actual forced liquidation will occur.
+     * If you have no liquidation price, the value will be -1.
+     *
+     * @param string $pair
+     * @return mixed
+     */
+    public function getMarginPosition($pair='all') {
+        return $this->trading([
+            'command' => 'getMarginPosition',
+            'currencyPair' => $pair,
+        ]);
+    }
+
+    /**
+     * Closes your margin position in a given market (specified by the "currencyPair" POST parameter) using a market order.
+     * This call will also return success if you do not have an open position in the specified market.
+     * @param $pair
+     * @return mixed
+     */
+    public function closeMarginPosition($pair) {
+        return $this->trading([
+            'command' => 'closeMarginPosition',
+            'currencyPair' => $pair,
+        ]);
+    }
+
+    /**
+     * Creates a loan offer for a given currency.
+     *
+     * @param $currency
+     * @param $amount
+     * @param $duration
+     * @param $lendingRate
+     * @param bool $autoRenew
+     */
+    public function createLoanOffer($currency, $amount, $duration, $lendingRate, $autoRenew=false) {
+        return $this->trading([
+            'command' => 'createLoanOffer',
+            'currency' => $currency,
+            'amount' => $amount,
+            'duration' => $duration,
+            'lendingRate' => $lendingRate,
+            'autoRenew' => (int) ((bool) $autoRenew),
+        ]);
+    }
+
+
+    /**
+     * Cancels a loan offer specified by the "orderNumber" parameter.
+     *
+     * @param $orderNumber
+     * @return mixed
+     */
+    public function cancelLoanOffer($orderNumber) {
+        return $this->trading([
+            'command' => 'cancelLoanOffer',
+            'orderNumber' => $orderNumber,
+        ]);
+    }
+
+    /**
+     * Returns your open loan offers for each currency.
+     * @return mixed
+     */
+    public function getOpenLoanOffers() {
+        return $this->trading([
+            'command' => 'returnOpenLoanOffers',
+        ]);
+    }
+
+
 
     /**
      * Generates a new address
@@ -151,6 +340,30 @@ class Client implements ClientContract
     }
 
     /**
+     * Cancels an order and places a new one of the same type in a single atomic transaction,
+     * meaning either both operations will succeed or both will fail.
+     * Required parameters are "orderNumber" and "rate";
+     *
+     * you may optionally specify "amount" if you wish to change the amount of the new order.
+     * "postOnly" or "immediateOrCancel" may be specified for exchange orders,
+     * but will have no effect on margin orders.
+     *
+     * @param $orderNumber
+     * @param $rate
+     * @param array $options
+     * @return mixed
+     */
+    public function moveOrder($orderNumber, $rate, array $options=[])
+    {
+        return $this->trading(array_merge([
+            'command' => 'moveOrder',
+            'orderNumber' => $orderNumber,
+            'rate' => $rate,
+        ], $options));
+    }
+
+
+    /**
      * Withdraw the currency amount to address.
      *
      * @param string $currency
@@ -169,9 +382,43 @@ class Client implements ClientContract
     }
 
 
-    public function returnCurrencies() {
+    /**
+     * If you are enrolled in the maker-taker fee schedule,
+     * returns your current trading fees and trailing 30-day volume in BTC.
+     * This information is updated once every 24 hours.
+     *
+     * @return mixed
+     */
+    public function getFeeInfo()
+    {
+        return $this->trading([
+            'command' => 'returnFeeInfo',
+        ]);
+    }
+
+
+    /**
+     * Returns information about currencies
+     *
+     * @return array|mixed
+     */
+    public function getCurrencies() {
         return $this->public([
             'command' => 'returnCurrencies',
+        ]);
+    }
+
+    /**
+     * Returns the list of loan offers and demands for a given currency, specified by "currency"
+     * @param string $currency
+     *
+     * @return array|mixed
+     */
+    public function getLoanOrders($currency)
+    {
+        return $this->public([
+            'command' => 'returnLoanOrders',
+            'currency' => $currency,
         ]);
     }
 
@@ -287,7 +534,7 @@ class Client implements ClientContract
      * Returns all of your balances, including available balance, balance on orders, and the estimated BTC value of your balance.
      *
      * By default, this call is limited to your exchange account;
-     * set the "account" POST parameter to "all" to include your margin and lending accounts.
+     * set the "account" parameter to "all" to include your margin and lending accounts.
      *
      * @inheritdoc
      */
@@ -297,7 +544,15 @@ class Client implements ClientContract
             'command' => 'returnCompleteBalances',
             'account' => $account,
         ]);
+    }
 
+    /**
+     * Returns all of your deposit addresses.
+     */
+    public function getDepositAddresses() {
+        return $this->trading([
+            'command' => 'returnDepositAddresses',
+        ]);
     }
 
     /**
@@ -323,6 +578,42 @@ class Client implements ClientContract
     public function getActiveLoans() {
         return $this->trading([
             'command' => 'returnActiveLoans',
+        ]);
+    }
+
+    /**
+     * Returns your lending history within a time range specified by the "start" and "end" POST as UNIX timestamps.
+     * "limit" may also be specified to limit the number of rows returned.
+     *
+     * @return mixed
+     */
+    public function getLendingHistory(int $startUnixTimestamp, int $endUnixTimestamp, int $limit=0) {
+
+        $parameters = [
+            'command' => 'returnLendingHistory',
+            'start' => $startUnixTimestamp,
+            'end' => $endUnixTimestamp,
+        ];
+
+        if($limit > 0) {
+            $parameters['limit'] = $limit;
+        }
+
+        return $this->trading($parameters);
+    }
+
+
+    /**
+     * Toggles the autoRenew setting on an active loan, specified by the "orderNumber" parameter.
+     * If successful, "message" will indicate the new autoRenew setting.
+     *
+     * @param $orderNumber
+     * @return mixed
+     */
+    public function toggleAutoRenewLoan($orderNumber) {
+        return $this->trading([
+            'command' => 'toggleAutoRenewLoan',
+            'orderNumber' => $orderNumber,
         ]);
     }
 
@@ -422,6 +713,11 @@ class Client implements ClientContract
      */
     public function trading(array $parameters = [])
     {
+        if(empty($this->key) || empty($this->secret)) {
+            throw new \Exception("Cannot call Poloniex trading API, invalid key/secret in config");
+        }
+
+
         $mt = (int) microtime(true) * 1000;
         $mt += self::$nonceIteration;
 
