@@ -1,7 +1,6 @@
 <?php
 namespace Pepijnolivier\Poloniex;
 
-
 use Illuminate\Support\Facades\Log;
 
 class Client implements ClientContract
@@ -84,12 +83,27 @@ class Client implements ClientContract
     }
 
 
-    public function getAvailableAccountBalances($account=null) {
+    public function getAvailableAccountBalances($account=null)
+    {
         return $this->trading(array_merge([
             'command' => 'returnAvailableAccountBalances',
         ], [
             'account' => $account,
         ]));
+    }
+
+    /**
+     * Generates a new address
+     *
+     * @param string      $currency
+     * @return array
+     */
+    public function generateNewAddress($currency)
+    {
+        return $this->trading([
+            'command' => 'generateNewAddress',
+            'currency' => $currency,
+        ]);
     }
 
     /**
