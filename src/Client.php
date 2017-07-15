@@ -181,6 +181,20 @@ class Client implements ClientContract
     }
 
     /**
+     * Returns the list of loan offers and demands for a given currency, specified by "currency"
+     * @param string $currency
+     *
+     * @return array|mixed
+     */
+    public function getLoanOrders($currency)
+    {
+        return $this->public([
+            'command' => 'returnLoanOrders',
+            'currency' => $currency,
+        ]);
+    }
+
+    /**
      * Chart data for given currency pair.
      *
      * @param string      $pair
@@ -302,8 +316,9 @@ class Client implements ClientContract
             'command' => 'returnCompleteBalances',
             'account' => $account,
         ]);
-
     }
+
+    public function getDeposit
 
     /**
      * @inheritdoc
@@ -427,6 +442,11 @@ class Client implements ClientContract
      */
     public function trading(array $parameters = [])
     {
+        if(empty($this->key) || empty($this->secret)) {
+            throw new \Exception("Cannot call Poloniex trading API, invalid key/secret in config");
+        }
+
+
         $mt = (int) microtime(true) * 1000;
         $mt += self::$nonceIteration;
 
