@@ -60,7 +60,7 @@ class Client implements ClientContract
      * @param string $pair
      * @return array
      */
-    public function getOpenOrders($pair)
+    public function getOpenOrders($pair='all')
     {
         return $this->trading([
             'command' => 'returnOpenOrders',
@@ -74,7 +74,7 @@ class Client implements ClientContract
      * @param string $pair
      * @return mixed
      */
-    public function getMyTradeHistory($pair, $start = null, $end = null)
+    public function getMyTradeHistory($pair='all', $start = null, $end = null)
     {
         return $this->trading(array_merge([
             'command' => 'returnTradeHistory',
@@ -364,21 +364,24 @@ class Client implements ClientContract
 
 
     /**
-     * Withdraw the currency amount to address.
+     * Immediately places a withdrawal for a given currency, with no email confirmation.
+     * In order to use this method, the withdrawal privilege must be enabled for your API key.
+     * Required parameters are "currency", "amount", and "address".
+     * For XMR withdrawals, you may optionally specify "paymentId". Sample output:
      *
      * @param string $currency
      * @param string $amount
      * @param string $address
      * @return mixed
      */
-    public function withdraw($currency, $amount, $address)
+    public function withdraw($currency, $amount, $address, array $extraParameters=[])
     {
-        return $this->trading([
+        return $this->trading(array_merge($extraParameters, [
             'command' => 'withdraw',
             'currency' => strtoupper($currency),
             'amount' => $amount,
             'address' => $address
-        ]);
+        ]));
     }
 
 
@@ -751,7 +754,7 @@ class Client implements ClientContract
         $response = curl_exec($ch);
 
         if ($response === false) {
-            throw new Exception('Curl error: '.curl_error($ch));
+            throw new \Exception('Curl error: '.curl_error($ch));
         }
 
         $response = json_decode($response, true);
