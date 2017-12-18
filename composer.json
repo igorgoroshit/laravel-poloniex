@@ -8,12 +8,15 @@
     {
       "name": "Pepijn Olivier",
       "email": "olivier.pepijn@gmail.com"
+    },
+    {
+      "name": "Igor Goroshit",
+      "email": "igor@webt.co.il"
     }
   ],
   "require": {
-    "php": ">=7.0.0",
-    "ext-curl": "*",
-    "laravel/framework": ">=5.3"
+    "php": ">=5.5.9",
+    "ext-curl": "*"
   },
   "autoload": {
     "psr-4": {
