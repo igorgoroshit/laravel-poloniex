@@ -406,7 +406,7 @@ class Client implements ClientContract
      * @return array|mixed
      */
     public function getCurrencies() {
-        return $this->public([
+        return $this->publicApi([
             'command' => 'returnCurrencies',
         ]);
     }
@@ -419,7 +419,7 @@ class Client implements ClientContract
      */
     public function getLoanOrders($currency)
     {
-        return $this->public([
+        return $this->publicApi([
             'command' => 'returnLoanOrders',
             'currency' => $currency,
         ]);
@@ -436,7 +436,7 @@ class Client implements ClientContract
      */
     public function getChartData($pair, $start = null, $end = null, $period = null)
     {
-        return $this->public(array_merge([
+        return $this->publicApi(array_merge([
             'command' => 'returnChartData',
             'currencyPair' => strtoupper($pair),
             'period' => $period
@@ -460,7 +460,7 @@ class Client implements ClientContract
      */
     public function getTradeHistory($pair, $start = null, $end = null, $period = null)
     {
-        return $this->public(array_merge([
+        return $this->publicApi(array_merge([
             'command' => 'returnTradeHistory',
             'currencyPair' => strtoupper($pair),
             'period' => $period
@@ -476,7 +476,7 @@ class Client implements ClientContract
      */
     public function getOrderBook($pair, $depth = 10)
     {
-        return $this->public([
+        return $this->publicApi([
             'command' => 'returnOrderBook',
             'currencyPair' => strtoupper($pair),
             'depth' => $depth
@@ -503,7 +503,7 @@ class Client implements ClientContract
      */
     public function getTradingPairs()
     {
-        return array_keys($this->public([
+        return array_keys($this->publicApi([
             'command' => 'returnTicker'
         ]));
     }
@@ -563,7 +563,7 @@ class Client implements ClientContract
      */
     public function getVolume()
     {
-        return $this->public([
+        return $this->publicApi([
             'command' => 'return24hVolume'
         ]);
     }
@@ -573,7 +573,7 @@ class Client implements ClientContract
      */
     public function getTickers()
     {
-        return $this->public([
+        return $this->publicApi([
             'command' => 'returnTicker'
         ]);
     }
@@ -689,7 +689,7 @@ class Client implements ClientContract
     /**
      * @inheritdoc
      */
-    public function public(array $parameters)
+    public function publicApi(array $parameters)
     {
         $options = [
             'http' => [
